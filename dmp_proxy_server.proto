@@ -1,0 +1,68 @@
+syntax = "proto3";
+package opensource.tab.dmp_proxy_server;
+// 注意：这里go_package指定的是协议生戨git上的地址，不要和上面的服务的git仓库地址一样
+option go_package="git.code.oa.com/tencent_abtest/protocol/protoc_dmp_proxy_server";
+
+// 定义服务接口
+service APIServer {
+  rpc GetDMPTagResult(GetDMPTagResultReq) returns (GetDMPTagResultResp); // 获取 dmp 标签命中结果
+  rpc BatchGetDMPTagResult(BatchGetDMPTagResultReq) returns (BatchGetDMPTagResultResp); // 批量获取 dmp 标签命中结果
+}
+
+// 请求 dmp 标签判定系统相关请求参数
+message GetDMPTagResultReq {
+  string business_code = 1; // 业务唯一标识编码
+  string unit_id = 2; // 唯一标识【可以是 user、session 等】
+  int64 unit_type = 3; // unitID 的类型，预留字段
+  string sdk_version = 4; // sdk 类型跟版本 如 GO_v1.5.6
+  DMPPlatform dmp_platform_code = 5; // 依赖的上游 dmp 系统
+  repeated string tag_list = 6; // 相关需要判定的 dmp 标签
+}
+
+// 请求 dmp 标签判定系统结果
+message GetDMPTagResultResp {
+  RetCode retCode = 1; // 返回码
+  string message = 2; // 具体信息
+  string unit_id = 3; // 唯一标识【可以是 user、session 等】
+  int64 unit_type = 4; // unitID 的类型，预留字段
+  DMPPlatform dmp_platform_code = 10; // 依赖的上游 dmp 系统
+  map<string, StatusCode> dmp_result = 11; // 判定结果集合，key 为 dmp 标签唯一标识，value 为判定结果
+}
+
+// 请求 dmp 标签判定系统相关请求参数
+message BatchGetDMPTagResultReq {
+  repeated GetDMPTagResultReq req_list = 1; // 请求体
+}
+
+// 请求 dmp 标签判定系统结果
+message BatchGetDMPTagResultResp {
+  repeated GetDMPTagResultResp resp_list = 1; // 响应体
+}
+
+// 上游依赖的 dmp 系统
+enum DMPPlatform {
+  DMP_PLATFORM_UNKNOWN = 0;
+  DMP_PLATFORM_TAB = 100; // tab 自建 dmp，预留
+  DMP_PLATFORM_WESEE = 101; // 画像中台 dmp 系统，原微视 dmp 系统
+  DMP_PLATFORM_BEACON = 102; // beacon dmp 系统
+  DMP_PLATFORM_OAS = 103; // oas dmp 系统
+  DMP_PLATFORM_KUNPENG = 104; // 鲲鹏 dmp 系统
+  DMP_PLATFORM_MAP = 105; // 地图 dmp 系统
+}
+
+// 返回码
+enum RetCode {
+  RET_CODE_UNKNOWN = 0; // 未知
+  RET_CODE_SUCCESS = 1000; // 成功
+  RET_CODE_PERMISSION_ERR = 1001; // 无权限
+  RET_CODE_LIMIT_ERR = 1002; // 限流返回
+  RET_CODE_INTERNAL_SERVER_ERR = 1004; // 内部系统错误，详细错误见 message
+  RET_CODE_INVALID_PARAM_ERR = 1005; // 参数错误
+}
+
+// unit dmp 标签状态码
+enum StatusCode {
+  STATUS_CODE_UNKNOWN = 0; // 未知
+  STATUS_CODE_HIT = 1; // 命中
+  STATUS_CODE_MISS = 2; // 不命中
+}
