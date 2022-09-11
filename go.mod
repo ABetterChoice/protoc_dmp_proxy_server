@@ -1,4 +1,4 @@
-module git.code.oa.com/tencent_abtest/protocol/protoc-dmp-proxy-server
+module git.code.oa.com/tencent_abtest/protocol/protoc_dmp_proxy_server
 
 go 1.17
 
