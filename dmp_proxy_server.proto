@@ -11,7 +11,7 @@ service APIServer {
 
 // 请求 dmp 标签判定系统相关请求参数
 message GetDMPTagResultReq {
-  string business_code = 1; // 业务唯一标识编码
+  string project_id = 1; // 项目 ID
   string unit_id = 2; // 唯一标识【可以是 user、session 等】
   int64 unit_type = 3; // unitID 的类型，预留字段
   string sdk_version = 4; // sdk 类型跟版本 如 GO_v1.5.6
