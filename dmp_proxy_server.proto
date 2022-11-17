@@ -22,7 +22,7 @@ message GetDMPTagResultReq {
 // 请求 dmp 标签判定系统结果
 message GetDMPTagResultResp {
   RetCode retCode = 1; // 返回码
-  string err_message = 2; // 具体信息
+  string message = 2; // 具体信息
   string unit_id = 3; // 唯一标识【可以是 user、session 等】
   int64 unit_type = 4; // unitID 的类型，预留字段
   DMPPlatform dmp_platform_code = 10; // 依赖的上游 dmp 系统
