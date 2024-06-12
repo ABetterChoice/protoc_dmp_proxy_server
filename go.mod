@@ -1,4 +1,4 @@
-module git.tencent.com/abetterchoice/protocol/protoc_dmp_proxy_server
+module github.com/abetterchoice/protoc_dmp_proxy_server
 
 go 1.17
 

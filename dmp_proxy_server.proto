@@ -1,7 +1,7 @@
 syntax = "proto3";
 package opensource.tab.dmp_proxy_server;
 // 注意：这里go_package指定的是协议生戨git上的地址，不要和上面的服务的git仓库地址一样
-option go_package="git.tencent.com/abetterchoice/protocol/protoc_dmp_proxy_server";
+option go_package="github.com/abetterchoice/protoc_dmp_proxy_server";
 
 // 定义服务接口
 service APIServer {
