@@ -7,6 +7,7 @@ option go_package="github.com/abetterchoice/protoc_dmp_proxy_server";
 service APIServer {
   rpc GetDMPTagResult(GetDMPTagResultReq) returns (GetDMPTagResultResp); // Get dmp tag hit results
   rpc BatchGetDMPTagResult(BatchGetDMPTagResultReq) returns (BatchGetDMPTagResultResp); // Batch obtain dmp tag hit results
+  rpc BatchGetTagValue(BatchGetTagValueReq) returns (BatchGetTagValueResp);
 }
                                                   
 // Request parameters related to the dmp tag determination system
@@ -27,6 +28,24 @@ message GetDMPTagResultResp {
   int64 unit_type = 4; // The type of unitID, reserved field
   DMPPlatform dmp_platform_code = 10; // Dependent upstream dmp system
   map<string, StatusCode> dmp_result = 11; // Judgment result set, key is the unique identifier of the dmp tag, value is the judgment result
+}
+
+message BatchGetTagValueReq {
+  string project_id = 1; // project ID
+  string unit_id = 2; // Unique identifier [can be user, session, etc.]
+  int64 unit_type = 3; // The type of unitID, reserved field
+  string sdk_version = 4; // SDK type and version, such as GO_v1.5.6
+  DMPPlatform dmp_platform_code = 5; // Dependent upstream dmp system
+  repeated string tag_list = 6; // Related dmp tags that need to be determined
+}
+
+message BatchGetTagValueResp {
+  RetCode retCode = 1; // Return Code
+  string message = 2; // specific information
+  string unit_id = 3; // Unique identifier [can be user, session, etc.]
+  int64 unit_type = 4; // The type of unitID, reserved field
+  DMPPlatform dmp_platform_code = 10; // Dependent upstream dmp system
+  map<string, string> tag_result = 11;
 }
 
 // Request parameters related to the dmp tag determination system
